@@ -22,12 +22,43 @@ keymap = {
     0:   "D", 1:   "E", 2:   "F", 3:   "0",
     4:   "A", 5:   "B", 6:   "C", 7:   "+",
     8:   "7", 9:   "8", 10:  "9", 11:  "-",
-    12:  "4", 13:  "5", 14:  "6", 15:  "*",
+    12:  "4", 13:  "5", 14:  "6", 15:  "<",
     16:  "1", 17:  "2", 18:  "3", 19:  "=" 
 }
 
+def py2native(input):
+    return input.replace("0x","").upper()
+
+def native2py(input):
+    # TODO handle decimal, binary, octal representations
+    return "0x"+input
+
+display_buf=""
+calc_buf=""
+num_buf=""
 while True:
     key_event = keys.events.get()
     if key_event and key_event.pressed:
-        print(keymap[key_event.key_number])
+        key = keymap[key_event.key_number]
+        if key in ["+", "-", "<", "="]:
+            calc_buf += native2py(num_buf)
+            if key == "=":
+                print("Calculating: %s" % (calc_buf))
+                display_buf = py2native(hex(eval(calc_buf)))
+                calc_buf=""
+                num_buf = display_buf
+            elif key == "<":
+                num_buf=""
+                calc_buf=""
+                display_buf=""
+            else:
+                calc_buf += key
+                num_buf = ""
+                display_buf += key
+        else:
+            display_buf += keymap[key_event.key_number]
+            num_buf += keymap[key_event.key_number]
+        print(display_buf)
+        #print(num_buf)
+        #print(calc_buf)
         
