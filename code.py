@@ -1,5 +1,9 @@
 import board
 import keypad
+import displayio
+import terminalio
+import adafruit_displayio_sh1107
+from adafruit_display_text import label
 
 # I fucked up the soldering
 # the key matrix shoudl look like this:
@@ -26,6 +30,41 @@ keymap = {
     16:  "0", 17:  "1", 18:  "2", 19:  "3" 
 }
 
+# SCREEN INIT
+
+displayio.release_displays()
+# oled_reset = board.D9
+
+# Use for I2C
+i2c = board.I2C()
+display_bus = displayio.I2CDisplay(i2c, device_address=0x3C)
+
+# SH1107 is vertically oriented 64x128
+WIDTH = 128
+HEIGHT = 64
+BORDER = 2
+
+display = adafruit_displayio_sh1107.SH1107(
+    display_bus, width=WIDTH, height=HEIGHT, rotation=0
+)
+
+# Make the display context
+splash = displayio.Group()
+display.show(splash)
+
+color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
+color_palette = displayio.Palette(1)
+color_palette[0] = 0xFFFFFF  # White
+
+text1 = "0123456789ABCDEF123456789AB"  # overly long to see where it clips
+text_area = label.Label(terminalio.FONT, text=text1, color=0xFFFFFF, x=8, y=8)
+splash.append(text_area)
+text2 = "SH1107"
+text_area2 = label.Label(
+    terminalio.FONT, text=text2, scale=2, color=0xFFFFFF, x=9, y=44
+)
+splash.append(text_area2)
+
 def py2native(input):
     return input.replace("0x","").upper()
 
@@ -45,6 +84,7 @@ while True:
             if key == "=":
                 print("Calculating: %s" % (calc_buf))
                 display_buf = py2native(hex(eval(calc_buf)))
+                text_area.text=calc_buf
                 calc_buf=""
                 num_buf = display_buf
             elif key == "<":
@@ -58,7 +98,8 @@ while True:
         else:
             display_buf += keymap[key_event.key_number]
             num_buf += keymap[key_event.key_number]
-        print(display_buf)
+        #print(display_buf)
+        text_area2.text=display_buf[-10:]
         #print(num_buf)
         #print(calc_buf)
         
