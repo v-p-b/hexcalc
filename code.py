@@ -3,7 +3,30 @@ import keypad
 import displayio
 import terminalio
 import adafruit_displayio_sh1107
+import random
 from adafruit_display_text import label
+
+def fortune():
+    with open("fortune.txt","r") as fortune:
+        lines=fortune.read().splitlines()
+        return random.choice(lines)
+
+def menu_text(text):
+    if len(text)>20:
+        return text[0:20]
+    else:
+        return text+(" "*(20-len(text)))
+
+def py2native(input):
+    return input.replace("0x","").upper()
+
+def native2py(input):
+    if input.lower().startswith("0b"):
+        return input.lower()
+    elif input.lower().startswith("0c"):
+        return "0o"+input[2:]
+    else:
+        return "0x"+input
 
 # I fucked up the soldering
 # the key matrix shoudl look like this:
@@ -56,7 +79,7 @@ color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
 color_palette = displayio.Palette(1)
 color_palette[0] = 0xFFFFFF  # White
 
-text1 = "Hack the Planet!"  # 20 chars
+text1 = menu_text(fortune())
 text_area = label.Label(terminalio.FONT, text=text1, color=0x000000, background_color=0xFFFFFF, x=8, y=8)
 splash.append(text_area)
 
@@ -68,17 +91,6 @@ calc_area = label.Label(
     terminalio.FONT, text=text2, scale=2, color=0xFFFFFF, x=9, y=44
 )
 splash.append(calc_area)
-
-def py2native(input):
-    return input.replace("0x","").upper()
-
-def native2py(input):
-    if input.lower().startswith("0b"):
-        return input.lower()
-    elif input.lower().startswith("0c"):
-        return "0o"+input[2:]
-    else:
-        return "0x"+input
 
 display_buf=""
 calc_buf=""
