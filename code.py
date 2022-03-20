@@ -56,21 +56,29 @@ color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
 color_palette = displayio.Palette(1)
 color_palette[0] = 0xFFFFFF  # White
 
-text1 = "0123456789ABCDEF123456789AB"  # overly long to see where it clips
-text_area = label.Label(terminalio.FONT, text=text1, color=0xFFFFFF, x=8, y=8)
+text1 = "Hack the Planet!"  # 20 chars
+text_area = label.Label(terminalio.FONT, text=text1, color=0x000000, background_color=0xFFFFFF, x=8, y=8)
 splash.append(text_area)
-text2 = "SH1107"
-text_area2 = label.Label(
+
+history_area = label.Label(terminalio.FONT, text="", color=0xFFFFFF,x=8, y=26)
+splash.append(history_area)
+
+text2 = "HEXCALC"
+calc_area = label.Label(
     terminalio.FONT, text=text2, scale=2, color=0xFFFFFF, x=9, y=44
 )
-splash.append(text_area2)
+splash.append(calc_area)
 
 def py2native(input):
     return input.replace("0x","").upper()
 
 def native2py(input):
-    # TODO handle decimal, binary, octal representations
-    return "0x"+input
+    if input.lower().startswith("0b"):
+        return input.lower()
+    elif input.lower().startswith("0c"):
+        return "0o"+input[2:]
+    else:
+        return "0x"+input
 
 display_buf=""
 calc_buf=""
@@ -84,7 +92,7 @@ while True:
             if key == "=":
                 print("Calculating: %s" % (calc_buf))
                 display_buf = py2native(hex(eval(calc_buf)))
-                text_area.text=calc_buf
+                history_area.text=calc_buf
                 calc_buf=""
                 num_buf = display_buf
             elif key == "<":
@@ -98,8 +106,8 @@ while True:
         else:
             display_buf += keymap[key_event.key_number]
             num_buf += keymap[key_event.key_number]
-        #print(display_buf)
-        text_area2.text=display_buf[-10:]
-        #print(num_buf)
-        #print(calc_buf)
+        print(display_buf)
+        calc_area.text=display_buf[-10:]
+        print(num_buf)
+        print(calc_buf)
         
