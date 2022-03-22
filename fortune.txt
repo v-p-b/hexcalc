@@ -1,3 +1,15 @@
 Hack the Planet!
 It's DNS.
 Bad alignment?
+Bad endianness?
+It's caching.
+Race condition!
+Time to sleep!
+Hydrate!
+Exercise!
+Make it data-only!
+Data is code.
+Code is data.
+There is no spoon.
+Please work...
+How could it work?
