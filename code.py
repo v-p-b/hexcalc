@@ -25,6 +25,8 @@ def native2py(input):
         return input.lower()
     elif input.lower().startswith("0c"):
         return "0o"+input[2:]
+    elif input.lower().startswith("0d"):
+        return input[2:]
     else:
         return "0x"+input
 
