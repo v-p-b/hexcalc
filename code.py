@@ -1,10 +1,18 @@
 import board
 import keypad
+import digitalio
 import displayio
 import terminalio
 import adafruit_displayio_sh1107
 import random
+import rotaryio
 from adafruit_display_text import label
+
+FEATURES = [
+    ("FORTUNE","Fortune"),
+    ("TWOS","Two's complement"),
+    ("DEC","2Decimal")
+]
 
 def fortune():
     with open("fortune.txt","r") as fortune:
@@ -55,6 +63,13 @@ keymap = {
     16:  "0", 17:  "1", 18:  "2", 19:  "3" 
 }
 
+# ENCODER
+
+encoder = rotaryio.IncrementalEncoder(board.MOSI, board.SCK)
+encoder_button = digitalio.DigitalInOut(board.D5)
+encoder_button.direction = digitalio.Direction.INPUT
+encoder_button.pull = digitalio.Pull.UP
+
 # SCREEN INIT
 
 displayio.release_displays()
@@ -97,8 +112,31 @@ splash.append(calc_area)
 display_buf=""
 calc_buf=""
 num_buf=""
+last_position = encoder.position
+encoder_button_state = False
+curr_feature = 0
+active_feature = FEATURES[curr_feature][0]
+
 while True:
     key_event = keys.events.get()
+    position = encoder.position
+    position_change = position - last_position
+    if position_change != 0:
+        curr_feature = (curr_feature + position_change) % len(FEATURES)
+        text_area.text=menu_text(FEATURES[curr_feature][1])
+    last_position = position
+
+    if not encoder_button.value and not encoder_button_state:
+        encoder_button_state = True
+
+    if encoder_button.value and encoder_button_state:
+        encoder_button_state=False
+        active_feature = FEATURES[curr_feature][0]
+
+    if active_feature == "FORTUNE":
+        active_feature = None # Infinite loop...
+        text_area.text = menu_text(fortune())
+
     if key_event and key_event.pressed:
         key = keymap[key_event.key_number]
         if key in ["+", "-", "<", "="]:
