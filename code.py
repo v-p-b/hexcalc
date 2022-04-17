@@ -9,8 +9,11 @@ import rotaryio
 from adafruit_display_text import label
 
 FEATURES = [
-    ("FORTUNE","Fortune"),
-    ("TWOS","Two's complement"),
+    ("FORTUNE", "Fortune"),
+    ("TWOS", "Two's complement"),
+    ("MULTI",  "*  /  <  ="),
+    ("AND",  "&  |  <  ="),
+    ("XOR",  "^  ^  <  ="),
     ("DEC","2Decimal")
 ]
 
@@ -151,9 +154,23 @@ while True:
                 num_buf=""
                 calc_buf=""
                 display_buf=""
-            else:
+            if key == "-" or key == "+":
+                if key == "-":
+                    if active_feature == "MULTI":
+                        key = "/"
+                    if active_feature == "AND":
+                        key = "|"
+                    if active_feature == "XOR":
+                        key = "^"
+                if key == "+":
+                    if active_feature == "MULTI":
+                        key = "*"
+                    if active_feature == "AND":
+                        key = "&"
+                    if active_feature == "XOR":
+                        key = "^"
                 calc_buf += key
-                num_buf = ""
+                num_buf=""
                 display_buf += key
         else:
             display_buf += keymap[key_event.key_number]
