@@ -39,12 +39,17 @@ The surface is really slippery, so be careful when measuring!
 
 For drilling I used a 3mm masonry drill head in an electric screwdriver set on a relatively slow speed. This way I could avoid cracks, but had to pause multiple times to let the plastic resolidify and clean the head. I fixed multiple imprefect drills with a 4mm head.
 
+Keys
+----
+
+I used an acrylic pen to draw signs on black plastic.
+
 Software
 --------
 
 The basic idea is to have a reprogrammable numpad, and feed any input to Python's eval() to get results. This way basic and boolean arithmethic in multiple number systems are available out of the box.
 
-### Notation:
+### Number format
 
 - `[0-9A-F]+` - Hexadecimal (default)
 - `0D[0-9]+` - Decimal
@@ -52,6 +57,8 @@ The basic idea is to have a reprogrammable numpad, and feed any input to Python'
 - `0C[0-7]` - Octal (sry, we don't have an 'o') 
 
 ### Modes
+
+These can be set using the encoder.
 
 - FORTUNE: This is the basic mode. Can add and subtract.
 - MULTI: `+` -> `*` and `-` -> `/` (division untested, pbbly will break things)
@@ -62,7 +69,7 @@ The basic idea is to have a reprogrammable numpad, and feed any input to Python'
 
 ### Challenge
 
-I'm willing to offer a bottle of fine booze to anyone who demonstrates arbitrary Python code execution using the implemented functionality and the available 20 buttons!
+I'm willing to offer a bottle of fine booze to anyone (original idea required) who demonstrates arbitrary Python code execution using the implemented functionality and the 20 available buttons!
 
 Planned developments
 --------------------
