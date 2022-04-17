@@ -32,14 +32,24 @@ def py2native(input):
     return input.replace("0x","").upper()
 
 def native2py(input):
+    negative=False
+    absval=input
+    if input[0] == "-":
+        negative = True
+        input = input[1:]
     if input.lower().startswith("0b"):
-        return input.lower()
+        absval = input.lower()
     elif input.lower().startswith("0c"):
-        return "0o"+input[2:]
+        absval = "0o"+input[2:]
     elif input.lower().startswith("0d"):
-        return input[2:]
+        absval = input[2:]
     else:
-        return "0x"+input
+        absval = "0x"+input
+
+    if negative:
+        return "-"+absval
+    else:
+        return absval
 
 # I fucked up the soldering
 # the key matrix shoudl look like this:
@@ -112,8 +122,11 @@ calc_area = label.Label(
 )
 splash.append(calc_area)
 
+# This is the main input area on the screen
 display_buf=""
+# This holds the expression to eval()
 calc_buf=""
+# This holds the digits of the last typed number
 num_buf=""
 last_position = encoder.position
 encoder_button_state = False
@@ -143,13 +156,13 @@ while True:
     if key_event and key_event.pressed:
         key = keymap[key_event.key_number]
         if key in ["+", "-", "<", "="]:
-            calc_buf += native2py(num_buf)
             if key == "=":
+                calc_buf += native2py(num_buf)
                 print("Calculating: %s" % (calc_buf))
                 display_buf = py2native(hex(eval(calc_buf)))
                 history_area.text=calc_buf
-                calc_buf=""
-                num_buf = display_buf
+                num_buf = ""
+                calc_buf = native2py(display_buf)
             elif key == "<":
                 num_buf=""
                 calc_buf=""
@@ -169,14 +182,17 @@ while True:
                         key = "&"
                     if active_feature == "XOR":
                         key = "^"
+
+                if len(num_buf)>0:
+                    calc_buf += native2py(num_buf)
+                    num_buf=""
                 calc_buf += key
-                num_buf=""
                 display_buf += key
         else:
             display_buf += keymap[key_event.key_number]
             num_buf += keymap[key_event.key_number]
-        print(display_buf)
+        print("disp: ",display_buf)
         calc_area.text=display_buf[-10:]
-        print(num_buf)
-        print(calc_buf)
-        
+        print("num: ",num_buf)
+        print("calc: ", calc_buf)
+        print("--") 
