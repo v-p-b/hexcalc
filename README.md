@@ -11,6 +11,7 @@ Parts
 * [Adafruit 128x64 OLED FeatherWing](https://learn.adafruit.com/adafruit-128x64-oled-featherwing)
 * 20x MX compatible keyswitches and caps
 * Screws: M2.5 for the FeatherWing, M3 for the keypad
+* Incremental encoder with push button
 
 Inspired by
 -----------
@@ -18,9 +19,53 @@ Inspired by
 * [Adafruit Macropad RP2040](https://learn.adafruit.com/adafruit-macropad-rp2040) - It took me a long time to realize, that these kinds of things are called "macropads" - a keyword that made googling for parts much easier!
 * [Numpad 4000](https://learn.adafruit.com/numpad-4000-mechanical-keyswitch-data-entry-device/overview) - A great project, but decimal is [BORING](https://www.youtube.com/watch?v=qf-hpusjxfw)!
 
+Wiring
+------
+
+The RP2040 Feather has 21 GPIO pins, I use 16:
+- 9 for the keyboard (4x5)
+- 2 for the display I2C
+- 3 for the display buttons, 1 is in active use for the encoder switch
+- 2 for the encoder
+
+The box
+-------
+
+I cut out the base from 2mm plexi sheets (polystyrol, sold as "hobbyglas" - a perfect name for a product, that is not actually made of glass...), because they were the only fitting plastic material I could find available. It's transparent, which I think is pretty cool for this project.
+
+Cutting the sheets is relatively easy [using a razor tool, then snapping it](https://www.youtube.com/watch?v=Axo_bTyl1gQ). 
+
+The surface is really slippery, so be careful when measuring!
+
+For drilling I used a 3mm masonry drill head in an electric screwdriver set on a relatively slow speed. This way I could avoid cracks, but had to pause multiple times to let the plastic resolidify and clean the head. I fixed multiple imprefect drills with a 4mm head.
+
+Software
+--------
+
+The basic idea is to have a reprogrammable numpad, and feed any input to Python's eval() to get results. This way basic and boolean arithmethic in multiple number systems are available out of the box.
+
+### Notation:
+
+- `[0-9A-F]+` - Hexadecimal (default)
+- `0D[0-9]+` - Decimal
+- `0B[01]+` - Binary
+- `0C[0-7]` - Octal (sry, we don't have an 'o') 
+
+### Modes
+
+- FORTUNE: This is the basic mode. Can add and subtract.
+- MULTI: `+` -> `*` and `-` -> `/` (division untested, pbbly will break things)
+- AND: `+` -> `&` and `-` -> `|` 
+- XOR: Both `+` and `-` become `^`
+- DEC: Convert displayed number to decimal (according to notation) *TBD*
+- TWOS: Two's complement, because signed bytes in Java suck *TBD*
+
+### Challenge
+
+I'm willing to offer a bottle of fine booze to anyone who demonstrates arbitrary Python code execution using the implemented functionality and the available 20 buttons!
+
 Planned developments
 --------------------
 
 * A proper box
-* Encoder to assign new functionality to buttons
 
