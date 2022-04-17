@@ -3,6 +3,8 @@ Calculator with Hexadecimal Numpad
 
 [HP-16C](https://en.wikipedia.org/wiki/HP-16C) for hackers, who don't mind wasting CPU cycles and RAM for comfort.
 
+![hexcalc front](/p0rn/1.jpg)
+
 Parts
 -----
 
@@ -27,6 +29,8 @@ The RP2040 Feather has 21 GPIO pins, I use 16:
 - 2 for the display I2C
 - 3 for the display buttons, 1 is in active use for the encoder switch
 - 2 for the encoder
+
+![hexcalc back](/p0rn/2.jpg)
 
 The box
 -------
