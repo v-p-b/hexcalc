@@ -51,6 +51,13 @@ def native2py(input):
     else:
         return absval
 
+# From Stack Overflow: https://stackoverflow.com/a/9147327
+def twos_comp(val, bits=8):
+    """compute the 2's complement of int value val"""
+    if (val & (1 << (bits - 1))) != 0: # if sign bit is set e.g., 8bit: 128-255
+        val = val - (1 << bits)        # compute negative value
+    return val                         # return positive value as is
+
 # I fucked up the soldering
 # the key matrix shoudl look like this:
 """
@@ -152,6 +159,15 @@ while True:
     if active_feature == "FORTUNE":
         active_feature = None # Infinite loop...
         text_area.text = menu_text(fortune())
+
+    if active_feature == "TWOS":
+        active_feature = None
+        twos=py2native(hex(twos_comp(int(num_buf))))
+        num_buf=twos
+        display_buf=twos
+        calc_buf=""
+        calc_area.text=twos
+        continue
 
     if key_event and key_event.pressed:
         key = keymap[key_event.key_number]
