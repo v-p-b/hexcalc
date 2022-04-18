@@ -169,6 +169,10 @@ while True:
         calc_area.text=twos
         continue
 
+    if active_feature == "DEC":
+        active_feature = None
+        history_area.text = str(int(native2py(display_buf)))
+
     if key_event and key_event.pressed:
         key = keymap[key_event.key_number]
         if key in ["+", "-", "<", "="]:

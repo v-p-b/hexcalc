@@ -68,7 +68,7 @@ These can be set using the encoder.
 - MULTI: `+` -> `*` and `-` -> `/` (division untested, pbbly will break things)
 - AND: `+` -> `&` and `-` -> `|` 
 - XOR: Both `+` and `-` become `^`
-- DEC: Convert displayed number to decimal (according to notation) *TBD*
+- DEC: Convert the currently displayed number to decimal (according to notation)
 - TWOS: Two's complement, because signed bytes in Java suck. This takes the currently displayed number as _8-bit_decimal_ and displays two's complement in _hexadecimal_!
 
 ### Challenge
