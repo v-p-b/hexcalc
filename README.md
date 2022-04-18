@@ -14,6 +14,7 @@ Parts
 * 20x MX compatible keyswitches and caps
 * Screws: M2.5 for the FeatherWing, M3 for the keypad
 * Incremental encoder with push button
+* Male and female pin headers to connect the Feather with the display. Careful when following tutorials advising the use of breadboards for soldering: my breadboard didn't exactly match the distance of pin lines, making the headers tilt!
 
 Inspired by
 -----------
