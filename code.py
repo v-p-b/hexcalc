@@ -14,7 +14,8 @@ FEATURES = [
     ("MULTI",  "*  /  <  ="),
     ("AND",  "&  |  <  ="),
     ("XOR",  "^  ^  <  ="),
-    ("DEC","2Decimal")
+    ("DEC","2Decimal"),
+    ("BIN","2Binary")
 ]
 
 def fortune():
@@ -59,7 +60,7 @@ def twos_comp(val, bits=8):
     return val                         # return positive value as is
 
 # I fucked up the soldering
-# the key matrix shoudl look like this:
+# the key matrix should look like this:
 """
 keys = keypad.KeyMatrix(
     row_pins=(board.D4, board.A3, board.A2, board.A1, board.A0),
@@ -172,6 +173,11 @@ while True:
     if active_feature == "DEC":
         active_feature = None
         history_area.text = str(int(native2py(display_buf)))
+
+    if active_feature == "BIN":
+        active_feature = None
+        history_area.text = str(bin(int(native2py(display_buf))))
+
 
     if key_event and key_event.pressed:
         key = keymap[key_event.key_number]
