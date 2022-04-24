@@ -14,6 +14,7 @@ FEATURES = [
     ("MULTI",  "*  /  <  ="),
     ("AND",  "&  |  <  ="),
     ("XOR",  "^  ^  <  ="),
+    ("SHIFT",  "<<  >>  <  ="),
     ("DEC","2Decimal"),
     ("BIN","2Binary")
 ]
@@ -201,6 +202,8 @@ while True:
                         key = "|"
                     if active_feature == "XOR":
                         key = "^"
+                    if active_feature == "SHIFT":
+                        key = ">>"
                 if key == "+":
                     if active_feature == "MULTI":
                         key = "*"
@@ -208,6 +211,8 @@ while True:
                         key = "&"
                     if active_feature == "XOR":
                         key = "^"
+                    if active_feature == "SHIFT":
+                        key = "<<"
 
                 if len(num_buf)>0:
                     calc_buf += native2py(num_buf)
