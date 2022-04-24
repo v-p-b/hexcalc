@@ -59,7 +59,7 @@ The basic idea is to have a reprogrammable numpad, and feed any input to Python'
 - `[0-9A-F]+` - Hexadecimal (default)
 - `0D[0-9]+` - Decimal
 - `0B[01]+` - Binary
-- `0C[0-7]` - Octal (sry, we don't have an 'o') 
+- `0C[0-7]+` - Octal (sry, we don't have an 'o') 
 
 ### Modes
 
@@ -70,6 +70,7 @@ These can be set using the encoder.
 - AND: `+` -> `&` and `-` -> `|` 
 - XOR: Both `+` and `-` become `^`
 - DEC: Convert the currently displayed number to decimal (according to notation)
+- BIN: Convert the currently displayed number to binary (according to notation)
 - TWOS: Two's complement, because signed bytes in Java suck. This takes the currently displayed number as _8-bit_decimal_ and displays two's complement in _hexadecimal_!
 
 ### Challenge
